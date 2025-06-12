@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IoT Weather Station | Real-time Environmental Monitoring</title>
+    <meta name="description" content="Advanced IoT weather monitoring system with real-time data visualization, alerts, and historical analytics">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <div class="loading-content">
+            <div class="weather-icon">
+                <i class="fas fa-cloud-sun"></i>
+            </div>
+            <h2>IoT Weather Station</h2>
+            <div class="loading-spinner"></div>
+            <p>Connecting to sensors...</p>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="app" class="app hidden">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-satellite-dish"></i>
+                    <h1>IoT Weather Station</h1>
+                </div>
+                <div class="status-indicators">
+                    <div class="status-item" id="connection-status">
+                        <i class="fas fa-wifi"></i>
+                        <span>Connected</span>
+                    </div>
+                    <div class="status-item" id="last-update">
+                        <i class="fas fa-clock"></i>
+                        <span>Just now</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Dashboard -->
+        <main class="dashboard">
+            <!-- Current Weather Overview -->
+            <section class="current-weather">
+                <div class="weather-card main-card">
+                    <div class="weather-primary">
+                        <div class="temperature-display">
+                            <span class="temp-value" id="current-temp">22</span>
+                            <span class="temp-unit">°C</span>
+                        </div>
+                        <div class="weather-icon-large">
+                            <i class="fas fa-sun" id="weather-icon"></i>
+                        </div>
+                    </div>
+                    <div class="weather-details">
+                        <h3 id="weather-condition">Sunny</h3>
+                        <p id="location">Kumasi, Ghana</p>
+                        <p id="current-time"></p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Sensor Metrics Grid -->
+            <section class="metrics-grid">
+                <!-- Temperature Card -->
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <i class="fas fa-thermometer-half"></i>
+                        <h3>Temperature</h3>
+                    </div>
+                    <div class="metric-value">
+                        <span id="temp-metric">22.5</span>
+                        <span class="unit">°C</span>
+                    </div>
+                    <div class="metric-trend">
+                        <i class="fas fa-arrow-up trend-up"></i>
+                        <span>+1.2° from yesterday</span>
+                    </div>
+                </div>
+
+                <!-- Humidity Card -->
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <i class="fas fa-tint"></i>
+                        <h3>Humidity</h3>
+                    </div>
+                    <div class="metric-value">
+                        <span id="humidity-metric">65</span>
+                        <span class="unit">%</span>
+                    </div>
+                    <div class="metric-trend">
+                        <i class="fas fa-arrow-down trend-down"></i>
+                        <span>-3% from yesterday</span>
+                    </div>
+                </div>
+
+                <!-- Pressure Card -->
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <i class="fas fa-gauge-high"></i>
+                        <h3>Pressure</h3>
+                    </div>
+                    <div class="metric-value">
+                        <span id="pressure-metric">1013</span>
+                        <span class="unit">hPa</span>
+                    </div>
+                    <div class="metric-trend">
+                        <i class="fas fa-arrow-up trend-up"></i>
+                        <span>+2 hPa from yesterday</span>
+                    </div>
+                </div>
+
+                <!-- Wind Speed Card -->
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <i class="fas fa-wind"></i>
+                        <h3>Wind Speed</h3>
+                    </div>
+                    <div class="metric-value">
+                        <span id="wind-metric">12</span>
+                        <span class="unit">km/h</span>
+                    </div>
+                    <div class="metric-trend">
+                        <i class="fas fa-arrow-up trend-up"></i>
+                        <span>+4 km/h from yesterday</span>
+                    </div>
+                </div>
+
+                <!-- UV Index Card -->
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <i class="fas fa-sun"></i>
+                        <h3>UV Index</h3>
+                    </div>
+                    <div class="metric-value">
+                        <span id="uv-metric">7</span>
+                        <span class="unit">High</span>
+                    </div>
+                    <div class="metric-trend">
+                        <i class="fas fa-arrow-up trend-up"></i>
+                        <span>+1 from yesterday</span>
+                    </div>
+                </div>
+
+                <!-- Air Quality Card -->
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <i class="fas fa-lungs"></i>
+                        <h3>Air Quality</h3>
+                    </div>
+                    <div class="metric-value">
+                        <span id="aqi-metric">42</span>
+                        <span class="unit">Good</span>
+                    </div>
+                    <div class="metric-trend">
+                        <i class="fas fa-arrow-down trend-down"></i>
+                        <span>-8 from yesterday</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Charts Section -->
+            <section class="charts-section">
+                <div class="chart-controls">
+                    <h2>Historical Data</h2>
+                    <div class="time-range-selector">
+                        <button class="time-btn active" data-range="24h">24 Hours</button>
+                        <button class="time-btn" data-range="7d">7 Days</button>
+                        <button class="time-btn" data-range="30d">30 Days</button>
+                    </div>
+                </div>
+
+                <div class="charts-grid">
+                    <!-- Temperature Chart -->
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Temperature Trend</h3>
+                            <div class="chart-options">
+                                <button class="chart-btn" data-metric="temperature">
+                                    <i class="fas fa-thermometer-half"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="temperature-chart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Multi-Metric Chart -->
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Environmental Overview</h3>
+                            <div class="chart-options">
+                                <button class="chart-btn active" data-metric="humidity">
+                                    <i class="fas fa-tint"></i>
+                                </button>
+                                <button class="chart-btn" data-metric="pressure">
+                                    <i class="fas fa-gauge-high"></i>
+                                </button>
+                                <button class="chart-btn" data-metric="wind">
+                                    <i class="fas fa-wind"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="multi-metric-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Alerts and Notifications -->
+            <section class="alerts-section">
+                <div class="section-header">
+                    <h2>System Alerts</h2>
+                    <div class="alert-count">
+                        <span id="alert-count">2</span> Active
+                    </div>
+                </div>
+                <div class="alerts-container" id="alerts-container">
+                    <!-- Alerts will be dynamically generated -->
+                </div>
+            </section>
+
+            <!-- Device Status -->
+            <section class="device-status">
+                <h2>Sensor Network</h2>
+                <div class="sensors-grid">
+                    <div class="sensor-item">
+                        <div class="sensor-icon">
+                            <i class="fas fa-thermometer-half"></i>
+                        </div>
+                        <div class="sensor-info">
+                            <h4>Temperature Sensor</h4>
+                            <p>DHT22 - Node 001</p>
+                        </div>
+                        <div class="sensor-status online">
+                            <i class="fas fa-circle"></i>
+                            <span>Online</span>
+                        </div>
+                    </div>
+
+                    <div class="sensor-item">
+                        <div class="sensor-icon">
+                            <i class="fas fa-tint"></i>
+                        </div>
+                        <div class="sensor-info">
+                            <h4>Humidity Sensor</h4>
+                            <p>DHT22 - Node 001</p>
+                        </div>
+                        <div class="sensor-status online">
+                            <i class="fas fa-circle"></i>
+                            <span>Online</span>
+                        </div>
+                    </div>
+
+                    <div class="sensor-item">
+                        <div class="sensor-icon">
+                            <i class="fas fa-gauge-high"></i>
+                        </div>
+                        <div class="sensor-info">
+                            <h4>Pressure Sensor</h4>
+                            <p>BMP280 - Node 002</p>
+                        </div>
+                        <div class="sensor-status online">
+                            <i class="fas fa-circle"></i>
+                            <span>Online</span>
+                        </div>
+                    </div>
+
+                    <div class="sensor-item">
+                        <div class="sensor-icon">
+                            <i class="fas fa-wind"></i>
+                        </div>
+                        <div class="sensor-info">
+                            <h4>Wind Sensor</h4>
+                            <p>Anemometer - Node 003</p>
+                        </div>
+                        <div class="sensor-status maintenance">
+                            <i class="fas fa-circle"></i>
+                            <span>Maintenance</span>
+                        </div>
+                    </div>
+
+                    <div class="sensor-item">
+                        <div class="sensor-icon">
+                            <i class="fas fa-sun"></i>
+                        </div>
+                        <div class="sensor-info">
+                            <h4>UV Sensor</h4>
+                            <p>VEML6070 - Node 004</p>
+                        </div>
+                        <div class="sensor-status online">
+                            <i class="fas fa-circle"></i>
+                            <span>Online</span>
+                        </div>
+                    </div>
+
+                    <div class="sensor-item">
+                        <div class="sensor-icon">
+                            <i class="fas fa-lungs"></i>
+                        </div>
+                        <div class="sensor-info">
+                            <h4>Air Quality Sensor</h4>
+                            <p>MQ135 - Node 005</p>
+                        </div>
+                        <div class="sensor-status online">
+                            <i class="fas fa-circle"></i>
+                            <span>Online</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <p>&copy; 2024 IoT Weather Station | Built by William Osei</p>
+                    <p>Real-time environmental monitoring system</p>
+                </div>
+                <div class="footer-links">
+                    <a href="#" class="footer-link">
+                        <i class="fab fa-github"></i>
+                        GitHub
+                    </a>
+                    <a href="#" class="footer-link">
+                        <i class="fas fa-chart-line"></i>
+                        Analytics
+                    </a>
+                    <a href="#" class="footer-link">
+                        <i class="fas fa-cog"></i>
+                        Settings
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/weather-station.js"></script>
+</body>
+</html>
+
