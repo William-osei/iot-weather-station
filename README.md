@@ -2,6 +2,9 @@
 
 **A sophisticated real-time environmental monitoring dashboard simulating an IoT weather station network with advanced data visualization and alert systems.**
 
+[![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-4CAF50?style=for-the-badge)](https://william-osei.github.io/iot-weather-station)
+[![Repository](https://img.shields.io/badge/📁_Repository-2196F3?style=for-the-badge)](https://github.com/William-osei/iot-weather-station)
+
 ![Portfolio Project](https://img.shields.io/badge/Portfolio-Project-blue)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white)
